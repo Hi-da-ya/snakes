@@ -18,8 +18,12 @@ GREEN = (0,255,0)
 
 #Set snake properties
 snake_size = 20  
+
+# Starting point- centre of the screen
 snake_x = WIDTH // 2  
 snake_y = HEIGHT // 2
+
+#Initial movement- moves to the right
 velocity_x = 5
 velocity_y = 0
 
@@ -49,7 +53,12 @@ while running:
 
     # Update snake position  
     snake_x += velocity_x  
-    snake_y += velocity_y         
+    snake_y += velocity_y 
+
+    
+    # Check if the snake hits the wall and end the game if it does 
+    if snake_x < 0 or snake_x + snake_size > WIDTH or snake_y < 0 or snake_y + snake_size > HEIGHT:  
+        running = False        
 
     screen.fill(BLACK)  
 
