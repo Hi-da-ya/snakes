@@ -25,6 +25,7 @@ snake_size = 20
 # Starting point- centre of the screen
 snake_x = WIDTH // 2  
 snake_y = HEIGHT // 2
+snake_body = [(snake_x, snake_y)]
 
 #Initial movement- moves to the right
 velocity_x = 5
@@ -63,17 +64,13 @@ while running:
     # Update snake position  
     snake_x += velocity_x  
     snake_y += velocity_y 
+    snake_body.insert(0, (snake_x, snake_y))
 
     
     # Check if the snake hits the wall and end the game if it does 
     if snake_x < 0 or snake_x + snake_size > WIDTH or snake_y < 0 or snake_y + snake_size > HEIGHT:  
         running = False        
-
-    screen.fill(BLACK)  
-
-    # Draw a snake and food
-    pygame.draw.rect(screen, GREEN, (snake_x, snake_y, snake_size, snake_size))
-    pygame.draw.circle(screen, RED, (food_x, food_y), food_radius)
+ 
 
     # **Collision Detection (Using Distance Formula)**
     distance = math.sqrt((snake_x - food_x) ** 2 + (snake_y - food_y) ** 2)
@@ -81,6 +78,20 @@ while running:
         food_x = random.randint(food_radius, WIDTH - food_radius)
         food_y = random.randint(food_radius, HEIGHT - food_radius)
 
+    else:
+        snake_body.pop()    
+
+    # Check for Self-Collision (Game Over if Snake Hits Itself)
+    if (snake_x, snake_y) in snake_body[1:]:
+        running = False    
+
+    screen.fill(BLACK) 
+    
+    # Draw Snake (as multiple squares)
+    for segment in snake_body:
+        pygame.draw.rect(screen, GREEN, (segment[0], segment[1], snake_size, snake_size))
+
+    pygame.draw.circle(screen, RED, (food_x, food_y), food_radius)
 
     pygame.display.update()
 
