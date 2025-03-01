@@ -12,8 +12,14 @@ pygame.display.set_caption("Snakes!!!")
 clock = pygame.time.Clock()
 FPS = 10
 
+#Define color
+BLACK = (0,0,0)
+GREEN = (0,255,0)
 
-
+#Set snake properties
+snake_size = 20  
+snake_x = WIDTH // 2  
+snake_y = HEIGHT // 2
 
 #Game loop
 running = True
@@ -22,7 +28,12 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    screen.fill((0, 0, 0))     
+    screen.fill(BLACK)  
+
+    # Draw a snake
+    pygame.draw.rect(screen, GREEN, (snake_x, snake_y, snake_size, snake_size))
+    
+       
     pygame.display.update()
 
     clock.tick(FPS)
