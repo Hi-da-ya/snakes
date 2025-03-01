@@ -1,4 +1,6 @@
 import pygame
+import random
+import math
 
 #Initialize pygame
 pygame.init()
@@ -12,9 +14,10 @@ pygame.display.set_caption("Snakes!!!")
 clock = pygame.time.Clock()
 FPS = 10
 
-#Define color
+#Define colours
 BLACK = (0,0,0)
 GREEN = (0,255,0)
+RED = (225,0,0)
 
 #Set snake properties
 snake_size = 20  
@@ -26,6 +29,12 @@ snake_y = HEIGHT // 2
 #Initial movement- moves to the right
 velocity_x = 5
 velocity_y = 0
+
+# Set food properties
+food_radius = 7
+food_x = random.randint(food_radius, WIDTH - food_radius)
+food_y = random.randint(food_radius, HEIGHT - food_radius)
+
 
 #Game clock
 game_clock = pygame.time.Clock()
@@ -62,8 +71,15 @@ while running:
 
     screen.fill(BLACK)  
 
-    # Draw a snake
+    # Draw a snake and food
     pygame.draw.rect(screen, GREEN, (snake_x, snake_y, snake_size, snake_size))
+    pygame.draw.circle(screen, RED, (food_x, food_y), food_radius)
+
+    # **Collision Detection (Using Distance Formula)**
+    distance = math.sqrt((snake_x - food_x) ** 2 + (snake_y - food_y) ** 2)
+    if distance < food_radius + (snake_size / 2):  # If snake "eats" the food
+        food_x = random.randint(food_radius, WIDTH - food_radius)
+        food_y = random.randint(food_radius, HEIGHT - food_radius)
 
 
     pygame.display.update()
